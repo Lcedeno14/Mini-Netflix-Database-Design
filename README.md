@@ -23,6 +23,7 @@ To run the project locally, you need Docker and Docker Compose installed. Follow
 
 1. Clone the repository:
    ```bash
+   gh repo clone Lcedeno14/Mini-Netflix-Database-Design
    cd backend
    ```
 
