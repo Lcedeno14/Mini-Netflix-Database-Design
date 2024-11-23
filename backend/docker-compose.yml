@@ -5,7 +5,7 @@ services:
     container_name: mysql_container
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: custom_database
+      MYSQL_DATABASE: netflix
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
@@ -13,5 +13,14 @@ services:
     volumes:
       - ./init-scripts:/docker-entrypoint-initdb.d
 
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: backend_container
+    ports:
+      - "8001:8001"
+    depends_on:
+      - db
 volumes:
   db_data:

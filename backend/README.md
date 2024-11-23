@@ -15,7 +15,7 @@ a. Navigate to the backend directory:
 
 b. Run the Docker container:
 
-```docker-compose up -d```
+```docker-compose up --build```
 
 c. Stop the project by CTRL+C or 
 
@@ -40,7 +40,7 @@ CREATE TABLE example_table (
 2. Save the changes and restart the Docker container for the changes to take effect:
 
 ```docker-compose down -v```
-```docker-compose up -d```
+```docker-compose up --build```
 
 ## How to Log In to the Database
 
@@ -50,7 +50,11 @@ Follow thes steps to access the database and perform queries:
 
 2. Run the following command to log into the MySQL database:
 
-`docker exec -it mysql_container mysql -uuser -ppassword --database=custom_database`
+`docker exec -it mysql_container mysql -uroot -proot_password`
+
+3. Run the SQL command
+
+`USE netflix`
 
 ##Example Queries 
 
