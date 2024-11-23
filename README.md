@@ -7,7 +7,7 @@ These are typically installed by default if you install [Docker Desktop](https:/
 <br>
 Look up how to install it for your OS.
 
-3. Starting the Backend Server
+2. Starting the Backend Server
 a. Navigate to the backend directory:
 ```cd backend```
 b. Run the Docker container:
