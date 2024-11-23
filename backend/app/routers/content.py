@@ -6,7 +6,7 @@ router = APIRouter()
 
 @router.get("/contents")
 async def get_contents(db=Depends(get_db)):
-    query = "SHOW TABLES"
+    query = "SELECT * FROM Users;"
     try:
         async with db.cursor() as cursor:
             await cursor.execute(query)
