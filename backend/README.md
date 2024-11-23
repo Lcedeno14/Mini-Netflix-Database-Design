@@ -16,7 +16,7 @@ Stop the project by CTRL+C or
 ```docker-compose down```
 
 ## Customizing the Database Schema
-The schema for the MySQL database is located in the init-scripts directory inside the schema.sql file. 
+The schema for the MySQL database is located in the ```init-scripts``` directory inside the schema.sql file. 
 
 Follow these steps to edit the schema:
 
