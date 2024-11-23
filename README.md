@@ -1,90 +1,63 @@
-#Netflix Clone Backend Project
+# Mini-Netflix-Database-Design
 
-Welcome to the backend repository for a Netflix-like application. This project aims to create a functional backend for a streaming service, featuring database design, data management, and an API layer for data interaction.
+Instructions
+1. Install Docker and Docker Compose.
 
-#Project Overview
+These are typically installed by default if you install [Docker Desktop](https://www.docker.com/products/docker-desktop/). 
+<br>
+Look up how to install it for your OS.
 
-This project involves designing a relational database that mimics the functionality of Netflix, with a focus on content management, user subscriptions, profiles, and watch history. We have implemented a FastAPI-based backend to interact with the database, providing a comprehensive API to support features like querying available content, managing user profiles, and maintaining a watch history.
+2. Starting the Backend Server
+   
+a. Navigate to the backend directory:
+ 
+```cd backend```
 
-The project showcases core backend development skills, including:
+b. Run the Docker container:
 
-Database Design: Created a MySQL database schema to store and manage data related to users, subscriptions, content, and other related entities. The database schema includes tables for managing user profiles, watch history, subscriptions, and content genres, ensuring relationships are represented using foreign keys.
+```docker-compose up --build```
 
-API Development: Set up a RESTful API using FastAPI to interact with the MySQL database. The API provides endpoints for operations such as retrieving content, managing user profiles, and exploring watch history.
+c. Stop the project by CTRL+C or 
 
-Data Handling: Developed endpoints to enable CRUD operations for various components of the Netflix-like service. We also plan to import fake data to demonstrate the full potential of our system.
+```docker-compose down```
 
-#Technologies Used
 
-FastAPI: A modern, fast (high-performance), web framework for building APIs with Python. It has been used here to provide a RESTful API layer that interacts with the backend database.
+## Customizing the Database Schema
+The schema for the MySQL database is located in the ```init-scripts``` directory inside the ```schema.sql``` file. 
 
-MySQL: A relational database management system used for storing all the data, including users, subscriptions, content, and profiles.
+Follow these steps to edit the schema:
 
-Docker: Used to containerize the application, making it easy to set up and deploy in any environment. Both MySQL and FastAPI services are configured with Docker Compose for streamlined development.
+1. Open the ```schema.sql``` file in your preferred text editor
 
-#Running the Project
+Modify the file as needed to update the database schema. For example, to add a new table:
 
-To run the project locally, you need Docker and Docker Compose installed. Follow these steps:
+```
+CREATE TABLE example_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+```
+2. Save the changes and restart the Docker container for the changes to take effect:
 
-Clone the repository:
+```docker-compose down -v```
+```docker-compose up --build```
 
-git clone <repository-url>
-cd netflix-clone-backend
+## How to Log In to the Database
 
-Start the services using Docker Compose:
+Follow thes steps to access the database and perform queries: 
 
-docker-compose up --build
+1. Open a terminal
 
-This will set up both the MySQL database (mysql_container) and the FastAPI backend (backend_container).
+2. Run the following command to log into the MySQL database:
 
-Access the API documentation:
+`docker exec -it mysql_container mysql -uroot -proot_password`
 
-Once the backend is running, you can access the Swagger UI documentation at: http://localhost:8001/docs.
+3. Run the SQL command
 
-The Swagger UI <url> allows you to explore and test the available API endpoints easily.
+`USE netflix`
 
-##API Endpoints
+##Example Queries 
 
-Some of the key API endpoints available include:
+`SHOW TABLES;`
 
-/contents: Retrieve a list of content filtered by parameters like maturity rating or type (e.g., "Movie" or "TV Show").
 
-/profiles: Manage user profiles, including adding new profiles, editing existing ones, and deleting profiles.
-
-/watch-history: Retrieve and manage watch history for a given user profile.
-
-The full list of available endpoints and their usage can be explored through the Swagger UI.
-
-#Database Design
-
-The MySQL database was designed to model key entities relevant to a streaming service, such as:
-
-Users: Storing user information and subscription details.
-
-Content: Information about the available movies and TV shows, including metadata such as titles, maturity ratings, and release dates.
-
-Profiles: Support for multiple user profiles per account, each with its unique settings and watch history.
-
-Watch History and Genres: Tracking viewing progress and content categorization.
-
-The schema includes appropriate primary and foreign keys to maintain relationships between entities, such as users and their profiles or content and genres.
-
-#Future Plans
-
-We plan to:
-
-Import Fake Data: Populate the database with realistic fake data to demonstrate the API in action.
-
-Add More Features: Expand the backend to support more features, such as search functionality, advanced filtering, and personalized recommendations.
-
-#Key Takeaways for Employers
-
-This project demonstrates the ability to design and implement a complete backend solution, focusing on practical skills required for a software development role, such as:
-
-Database Schema Design: Creating normalized tables, establishing relationships, and ensuring data integrity.
-
-API Development: Building efficient and maintainable RESTful APIs using FastAPI.
-
-Containerization with Docker: Making deployment easier with Docker and Docker Compose.
-
-Feel free to explore the codebase, try running the backend locally, and check out the API documentation to see the implementation in action. I welcome any questions or feedback regarding this project.
