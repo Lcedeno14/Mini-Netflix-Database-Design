@@ -3,4 +3,4 @@ Introduction:
 
 Backend Set-up:
 
-Check the READ.ME inside `Mini-Netflix-Database-Design/Backend`
+Check the README.md inside `Mini-Netflix-Database-Design/Backend`
