@@ -23,8 +23,7 @@ To run the project locally, you need Docker and Docker Compose installed. Follow
 
 1. Clone the repository:
    ```bash
-   git clone <[repository-url](https://github.com/Lcedeno14/Mini-Netflix-Database-Design.git)>
-   cd netflix-clone-backend
+   cd backend
    ```
 
 2. Start the services using Docker Compose:
