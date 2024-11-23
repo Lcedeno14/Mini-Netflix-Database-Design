@@ -1,7 +1,29 @@
 CREATE DATABASE IF NOT EXISTS Netflix;
 USE Netflix;
 
-CREATE TABLE Users (
+CREATE TABLE IF NOT EXISTS Manager (
+    Manager_ID INT AUTO_INCREMENT PRIMARY KEY,
+    FName VARCHAR(50),
+    LName VARCHAR(50),
+    SSN VARCHAR(11) UNIQUE NOT NULL,
+    Hours_Worked INT,
+    Email VARCHAR(100) UNIQUE,
+    Phone_Number VARCHAR(15),
+    Hire_Date DATE,
+    Salary DECIMAL(10, 2),
+    Status ENUM('Active', 'On Leave', 'Retired', 'Terminated')
+);
+
+CREATE TABLE IF NOT EXISTS Subscription_Type (
+    Type_Name ENUM('Standard with ads', 'Standard', 'Premium') PRIMARY KEY,  
+    Price DECIMAL(5, 2) NOT NULL CHECK (Price IN (6.99, 15.49, 22.99)),  
+    Max_Devices INT NOT NULL CHECK (Max_Devices IN (2, 4)),  
+    Has_Ads BOOLEAN NOT NULL, 
+    Max_Resolution ENUM('1080p', '4k') NOT NULL, 
+    Max_Device_Download INT NOT NULL CHECK (Max_Device_Download IN (2, 6))
+);
+
+CREATE TABLE IF NOT EXISTS Users (
     User_ID INT AUTO_INCREMENT PRIMARY KEY,
     FName VARCHAR(50), -- Valid name constraint needs to be programatically enforced
     LName VARCHAR(50), -- Same here
@@ -17,29 +39,20 @@ CREATE TABLE Users (
 	FOREIGN KEY (Subscription_Type) REFERENCES Subscription_Type(Type_Name)
 );
 
-CREATE TABLE Subscription_Type (
-    Type_Name ENUM('Standard with ads', 'Standard', 'Premium') PRIMARY KEY,  
-    Price DECIMAL(5, 2) NOT NULL CHECK (Price IN (6.99, 15.49, 22.99)),  
-    Max_Devices INT NOT NULL CHECK (Max_Devices IN (2, 4)),  
-    Has_Ads BOOLEAN NOT NULL, 
-    Max_Resolution ENUM('1080p', '4k') NOT NULL, 
-    Max_Device_Download INT NOT NULL CHECK (Max_Device_Download IN (2, 6))
-);
-
-CREATE TABLE Profiles (
-    Profile_ID INT AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS Profiles (
+    Profile_ID INT AUTO_INCREMENT PRIMARY KEY, 
     Name VARCHAR(50),
     Age INT CHECK (Age BETWEEN 0 AND 120),
     Avatar_Img_URL VARCHAR(255),
     Display_Language ENUM('English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Chinese', 'Japanese', 'Russian', 'Korean', 'Hindi', 'Arabic') NOT NULL,
-    Audio_Subtitle_Language ENUM('English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Chinese', 'Japanese', 'Russian', 'Korean', 'Hindi', 'Arabic') NOT NULL,  
+    Audio_Subtitle_Language ENUM('English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Chinese', 'Japanese', 'Russian', 'Korean', 'Hindi', 'Arabic') NOT NULL,
     Autoplay BOOLEAN,
-	User_ID INT NOT NULL,
-	PRIMARY KEY (User_ID, Profile_ID),
-    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
+    User_ID INT NOT NULL,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    UNIQUE (User_ID, Profile_ID)
 );
 
-CREATE TABLE Device (
+CREATE TABLE IF NOT EXISTS Device (
     Device_ID INT AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(50),
     Latitude DECIMAL(9, 6),
@@ -50,7 +63,7 @@ CREATE TABLE Device (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
-CREATE TABLE Content (
+CREATE TABLE IF NOT EXISTS Content (
     Content_ID INT AUTO_INCREMENT PRIMARY KEY,
     Content_Type ENUM('Movie', 'TV Show'),
     Title VARCHAR(255),
@@ -65,7 +78,7 @@ CREATE TABLE Content (
     FOREIGN KEY (Manager_ID) REFERENCES Manager(Manager_ID) 
 );
 
-CREATE TABLE Watch_History (
+CREATE TABLE IF NOT EXISTS Watch_History (
     History_ID INT AUTO_INCREMENT PRIMARY KEY,
     Last_Watched_Timestamp INT, -- in seconds
     Completed BOOLEAN,    
@@ -77,19 +90,19 @@ CREATE TABLE Watch_History (
     FOREIGN KEY (Device_ID) REFERENCES Device(Device_ID)  
 );
 
-CREATE TABLE Genre (
+CREATE TABLE IF NOT EXISTS Genre (
     Genre_ID INT AUTO_INCREMENT PRIMARY KEY,
     Genre_Name ENUM('Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary', 'Drama', 'Family', 'Fantasy', 'Horror', 'Musical', 'Mystery', 'Romance', 'Science Fiction', 'Thriller', 'War', 'Western') NOT NULL
 );
 
-CREATE TABLE Content_Genre (
+CREATE TABLE IF NOT EXISTS Content_Genre (
     Content_ID INT NOT NULL,
     Genre_ID INT NOT NULL,
     FOREIGN KEY (Content_ID) REFERENCES Content(Content_ID),
     FOREIGN KEY (Genre_ID) REFERENCES Genre(Genre_ID)
 );
 
-CREATE TABLE Cast (
+CREATE TABLE IF NOT EXISTS Cast (
     Content_ID INT NOT NULL,
     Name VARCHAR(100),
     Position VARCHAR(50),
@@ -98,7 +111,7 @@ CREATE TABLE Cast (
     FOREIGN KEY (Content_ID) REFERENCES Content(Content_ID)
 );
 
-CREATE TABLE Episodes (
+CREATE TABLE IF NOT EXISTS Episodes (
     Content_ID INT NOT NULL,
     Title VARCHAR(255),
     Summary TEXT,
@@ -110,20 +123,7 @@ CREATE TABLE Episodes (
     FOREIGN KEY (Content_ID) REFERENCES Content(Content_ID)
 );
 
-CREATE TABLE Manager (
-    Manager_ID INT AUTO_INCREMENT PRIMARY KEY,
-    FName VARCHAR(50),
-    LName VARCHAR(50),
-    SSN VARCHAR(11) UNIQUE NOT NULL,
-    Hours_Worked INT,
-    Email VARCHAR(100) UNIQUE,
-    Phone_Number VARCHAR(15),
-    Hire_Date DATE,
-    Salary DECIMAL(10, 2),
-    Status ENUM('Active', 'On Leave', 'Retired', 'Terminated')
-);
-
-CREATE TABLE Payment_History (
+CREATE TABLE IF NOT EXISTS Payment_History (
     Payment_ID INT AUTO_INCREMENT PRIMARY KEY,
     Amount DECIMAL(10, 2),
     Payment_Date DATE,
@@ -135,7 +135,7 @@ CREATE TABLE Payment_History (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID)
 );
 
-CREATE TABLE Profile_Watchlist (
+CREATE TABLE IF NOT EXISTS Profile_Watchlist (
     Profile_ID INT NOT NULL,
     Content_ID INT NOT NULL,
     Date_Added DATETIME DEFAULT CURRENT_TIMESTAMP, 
