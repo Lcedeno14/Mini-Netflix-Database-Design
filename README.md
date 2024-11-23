@@ -1,8 +1,8 @@
-##Netflix Clone Backend Project
+#Netflix Clone Backend Project
 
 Welcome to the backend repository for a Netflix-like application. This project aims to create a functional backend for a streaming service, featuring database design, data management, and an API layer for data interaction.
 
-##Project Overview
+#Project Overview
 
 This project involves designing a relational database that mimics the functionality of Netflix, with a focus on content management, user subscriptions, profiles, and watch history. We have implemented a FastAPI-based backend to interact with the database, providing a comprehensive API to support features like querying available content, managing user profiles, and maintaining a watch history.
 
@@ -14,7 +14,7 @@ API Development: Set up a RESTful API using FastAPI to interact with the MySQL d
 
 Data Handling: Developed endpoints to enable CRUD operations for various components of the Netflix-like service. We also plan to import fake data to demonstrate the full potential of our system.
 
-##Technologies Used
+#Technologies Used
 
 FastAPI: A modern, fast (high-performance), web framework for building APIs with Python. It has been used here to provide a RESTful API layer that interacts with the backend database.
 
@@ -22,7 +22,7 @@ MySQL: A relational database management system used for storing all the data, in
 
 Docker: Used to containerize the application, making it easy to set up and deploy in any environment. Both MySQL and FastAPI services are configured with Docker Compose for streamlined development.
 
-##Running the Project
+#Running the Project
 
 To run the project locally, you need Docker and Docker Compose installed. Follow these steps:
 
@@ -55,7 +55,7 @@ Some of the key API endpoints available include:
 
 The full list of available endpoints and their usage can be explored through the Swagger UI.
 
-##Database Design
+#Database Design
 
 The MySQL database was designed to model key entities relevant to a streaming service, such as:
 
@@ -69,7 +69,7 @@ Watch History and Genres: Tracking viewing progress and content categorization.
 
 The schema includes appropriate primary and foreign keys to maintain relationships between entities, such as users and their profiles or content and genres.
 
-##Future Plans
+#Future Plans
 
 We plan to:
 
@@ -77,7 +77,7 @@ Import Fake Data: Populate the database with realistic fake data to demonstrate 
 
 Add More Features: Expand the backend to support more features, such as search functionality, advanced filtering, and personalized recommendations.
 
-##Key Takeaways for Employers
+#Key Takeaways for Employers
 
 This project demonstrates the ability to design and implement a complete backend solution, focusing on practical skills required for a software development role, such as:
 
