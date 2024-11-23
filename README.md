@@ -7,10 +7,11 @@ These are typically installed by default if you install [Docker Desktop](https:/
 <br>
 Look up how to install it for your OS.
 
-2. Start the backend by this command
-
+3. Starting the Backend Server
+a. Navigate to the backend directory:
+```cd backend```
+b. Run the Docker container:
 ```docker-compose up -d```
-
-Stop the project by CTRL+C or 
+c. Stop the project by CTRL+C or 
 
 ```docker-compose down```
