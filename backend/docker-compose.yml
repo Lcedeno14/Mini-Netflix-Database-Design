@@ -1,4 +1,4 @@
-name: Netflix
+name: netflix
 services:
   db:
     image: mysql:8.0
