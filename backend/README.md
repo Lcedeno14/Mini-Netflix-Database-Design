@@ -41,3 +41,19 @@ CREATE TABLE example_table (
 
 ```docker-compose down -v```
 ```docker-compose up -d```
+
+## How to Log In to the Database
+
+Follow thes steps to access the database and perform queries: 
+
+1. Open a terminal
+
+2. Run the following command to log into the MySQL database:
+
+`docker exec -it mysql_container mysql -uuser -ppassword --database=custom_database`
+
+##Example Queries 
+
+`SHOW TABLES;`
+
+
