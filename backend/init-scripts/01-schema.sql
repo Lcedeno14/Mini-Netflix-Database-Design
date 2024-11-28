@@ -1,4 +1,3 @@
-
 CREATE TABLE IF NOT EXISTS Manager (
     Manager_ID INT AUTO_INCREMENT PRIMARY KEY,
     FName VARCHAR(50),
@@ -82,9 +81,11 @@ CREATE TABLE IF NOT EXISTS Watch_History (
     Completed BOOLEAN,    
     Profile_ID INT NOT NULL,
     Content_ID INT NOT NULL,
+    Episode_ID INT,
     Device_ID INT NOT NULL,
     FOREIGN KEY (Profile_ID) REFERENCES Profiles(Profile_ID), 
     FOREIGN KEY (Content_ID) REFERENCES Content(Content_ID), 
+    FOREIGN KEY (Episode_ID) REFERENCES Content(Content_ID),
     FOREIGN KEY (Device_ID) REFERENCES Device(Device_ID)  
 );
 
