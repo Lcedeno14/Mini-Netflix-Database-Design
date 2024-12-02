@@ -79,3 +79,15 @@ async def create_content(
         return {"message": "Content created successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error creating content: " + str(e))
+
+@router.get("/contents")
+async def get_contents(db=Depends(get_db)):
+    # query = "SHOW TABLES"
+    query = "SELECT * FROM Content"
+    try:
+        async with db.cursor() as cursor:
+            await cursor.execute(query)
+            result = await cursor.fetchall()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error retrieving tables: " + str(e))
