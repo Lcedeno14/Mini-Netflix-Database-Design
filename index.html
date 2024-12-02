@@ -187,9 +187,32 @@
         }
 
         // Function to handle queries (displaying results)
-        function showOutput(output) {
+        async function showOutput(output) {
             // Display results in the output section
             document.getElementById("output").innerHTML = output;
+            // const output = document.getElementById('output');
+            // try {
+            //     const response = await fetch("http://localhost:8001/contents"); // Update the URL to match your FastAPI backend
+            //     if (!response.ok) {
+            //         throw new Error(`HTTP error! Status: ${response.status}`);
+            // }
+
+            // const data = await response.json();
+
+            // // Render the fetched data into a table for better readability
+            // if (data.length > 0) {
+            //     let out = "<h3>Content Tables</h3><table><tr><th>Table Name</th></tr>";
+            //     data.forEach((row) => {
+            //         out += `<tr><td>${row[0]}</td></tr>`;
+            //     });
+            //     out += "</table>";
+            //     output.innerHTML = out;
+            // } else {
+            //     output.innerHTML = "<p>No tables found.</p>";
+            // }
+            // } catch (error) {
+            //     output.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            // }
         }
     </script>
 </body>
