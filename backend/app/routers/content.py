@@ -169,7 +169,7 @@ async def get_last_watched_content(
             WHERE 
                 p.Age < %s AND c.Content_Type = 'Movie'
             GROUP BY 
-                p.Profile_ID, p.Name, p.Age, c.Content_ID, c.Title
+                p.Profile_ID, p.Name, p.Age, c.Content_ID
             ORDER BY 
                 p.Profile_ID, c.Content_ID;
 
