@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Netflix DB Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -16,9 +18,12 @@
         h1 {
             text-align: center;
             margin: 20px;
-            color: #fff;
-        }
-
+            color: red;
+            font-family: 'Bebas Neue', sans-serif; /* Add the Netflix-like font */
+            font-size: 3rem; /* Adjust the size as desired */
+            letter-spacing: 2px; /* Add letter spacing for a more Netflix-like appearance */
+            text-transform: uppercase; /* Optional: Makes the text uppercase */
+}
         .tab-container {
             display: flex;
             justify-content: center;
@@ -100,7 +105,49 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-        
+
+        form {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            padding: 20px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+        }
+
+        .add-query label {
+            display: block;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .add-query .left-column,
+        .add-query .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .add-query input[type="text"],
+        .add-query input[type="number"],
+        .add-query input[type="date"],
+        .add-query input[type="url"],
+        .add-query select,
+        .add-query textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .add-query textarea {
+            resize: vertical;
+        }        
     </style>
 </head>
 <body>
@@ -159,6 +206,81 @@
             <button onclick="queryFive()">Submit the query</button> 
         </div>
     </div>
+
+    <!-- Query 4-->
+     <div id="query-four" class="container tab-content" style="display: none;">
+        <h2>Add New Content</h2>
+        <form id="contentForm" method="POST" class="add-query"> 
+            <!-- Left Column -->
+            <div class="left-column">
+                <div>
+                    <label for="content_type">Content Type:</label>
+                    <select id="content_type" name="content_type" required>
+                        <option value="Movie">Movie</option>
+                        <option value="TV Show">TV Show</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" maxlength="255" required>
+                </div>
+
+                <div>
+                    <label for="summary">Summary:</label>
+                    <textarea id="summary" name="summary" rows="3" required></textarea>
+                </div>
+
+                <div>
+                    <label for="release_date">Release Date:</label>
+                    <input type="date" id="release_date" name="release_date" required>
+                </div>
+
+                <div>
+                    <label for="maturity_rating">Maturity Rating:</label>
+                    <select id="maturity_rating" name="maturity_rating" required>
+                        <option value="G">G</option>
+                        <option value="PG">PG</option>
+                        <option value="PG-13">PG-13</option>
+                        <option value="R">R</option>
+                        <option value="NC-17">NC-17</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <div>
+                    <label for="duration">Duration (in minutes):</label>
+                    <input type="number" id="duration" name="duration" min="0">
+                </div>
+
+                <div>
+                    <label for="video_url">Video URL:</label>
+                    <input type="text" id="video_url" name="video_url">
+                </div>
+
+                <div>
+                    <label for="trailer_url">Trailer URL:</label>
+                    <input type="text" id="trailer_url" name="trailer_url">
+                </div>
+
+                <div>
+                    <label for="flyer_url">Flyer URL:</label>
+                    <input type="text" id="flyer_url" name="flyer_url">
+                </div>
+
+                <div>
+                    <label for="manager_id">Manager ID:</label>
+                    <input type="number" id="manager_id" name="manager_id" min="1">
+                </div>
+            </div>
+            <div>
+                <button type="submit">Submit the query</button> 
+            </div>
+        </form>
+        
+     </div>
 
     <!-- Output Section -->
     <div class="output" id="output"></div>
@@ -236,8 +358,7 @@
                 document.getElementById('output').innerHTML = `Error: ${error.message}`;
             }
         }
-        
-
+      
         async function queryThree() {
     const age = document.getElementById('age').value;
     if (age < 1) {
@@ -347,6 +468,54 @@ function displayTable(result) {
             }
         }
 
+        // Query 4
+        async function submitContentForm(event) {
+            
+            event.preventDefault(); 
+            const contentData = {
+                content_type: document.getElementById('content_type').value,
+                title: document.getElementById('title').value,
+                summary: document.getElementById('summary').value,
+                release_date: document.getElementById('release_date').value,
+                maturity_rating: document.getElementById('maturity_rating').value,
+                duration: parseInt(document.getElementById('duration').value, 10),
+                video_url: document.getElementById('video_url').value,
+                trailer_url: document.getElementById('trailer_url').value,
+                flyer_url: document.getElementById('flyer_url').value,
+                manager_id: parseInt(document.getElementById('manager_id').value, 10),
+            };
+                        
+            try {
+                const response = await fetch('http://localhost:8001/add_contents', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(contentData)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const result = await response.json();
+
+                // Display success message or response
+                document.getElementById('output').innerHTML = `
+                    <p style="color: green;">Content added successfully!</p>
+                    <p>Response: ${JSON.stringify(result)}</p>
+                `;
+            } catch (error) {
+                // Handle errors
+                console.error('Error submitting data:', error);
+                document.getElementById('output').innerHTML = `
+                    <p style="color: red;">Error: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Attach the submit event listener to the form
+        document.getElementById('contentForm').addEventListener('submit', submitContentForm);
 
     </script>
 </body>
