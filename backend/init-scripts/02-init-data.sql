@@ -119,7 +119,7 @@ VALUES
 (5, 14), -- Science Fiction
 (5, 15), -- Thriller
 -- Titanic
-(6, 4),  -- Drama
+(6, 7),  -- Drama
 (6, 9),  -- Family
 (6, 13), -- Romance
 (6, 9), -- Fantasy
