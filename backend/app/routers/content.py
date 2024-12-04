@@ -118,30 +118,36 @@ async def get_profiles(
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
     
-@router.get('/query_two/{content_name}')
-async def get_last_watched_content(
-    content_name: str, db=Depends(get_db),
+@router.get('/query_two/{genre}')
+async def get_movies_by_genre(
+    genre: str, db=Depends(get_db),
 ):
     query = """
-                SELECT 
-                u.FName, 
-                u.LName, 
-                p.Name AS Profile_Name 
-                FROM Watch_History w
-                JOIN Profiles p ON w.Profile_ID = p.Profile_ID
-                JOIN Users u ON p.User_ID = u.User_ID
-                JOIN Content c ON w.Content_ID = c.Content_ID
-                WHERE c.Title = %s 
-                    AND w.Last_Watched_Timestamp > 1800
-                GROUP BY u.User_ID, p.Profile_ID
-            """    
+       SELECT DISTINCT u.FName AS User_First_Name, 
+                        u.LName AS User_Last_Name, 
+                        c.Content_ID,  -- Include Content_ID for debugging
+                        c.Title AS Movie_Title
+        FROM Users u
+        JOIN Profiles p ON u.User_ID = p.User_ID
+        JOIN Watch_History wh ON p.Profile_ID = wh.Profile_ID
+        JOIN Content c ON wh.Content_ID = c.Content_ID
+        WHERE c.Content_ID IN (
+            SELECT cg.Content_ID
+            FROM Content_Genre cg
+            JOIN Genre g ON cg.Genre_ID = g.Genre_ID
+            WHERE g.Genre_Name = %s
+        ) AND c.Content_Type = 'Movie';
+    """    
     try: 
         async with db.cursor() as cursor:
-            await cursor.execute(query, content_name)
-            result = await cursor.fetchall()
-        return result
+            await cursor.execute(query, (genre,))
+            rows = await cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]  # Get column names
+        # Combine column names with rows for structured response
+        return {"columns": columns, "data": rows}
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+        raise HTTPException(status_code=500, detail=f"Error retrieving data: {e}")
+
     
 @router.get('/query_three/{age}')
 async def get_last_watched_content(
