@@ -68,86 +68,86 @@ VALUES
 
 INSERT INTO Genre (Genre_Name)
 VALUES 
-('Action'), 
-('Adventure'), 
-('Animation'), 
-('Comedy'), 
-('Crime'), 
-('Documentary'), 
-('Drama'), 
-('Family'), 
-('Fantasy'), 
-('Horror'), 
-('Musical'), 
-('Mystery'), 
-('Romance'), 
-('Science Fiction'), 
-('Thriller'), 
-('War'), 
-('Western');
+('Action'),          -- 1. 
+('Adventure'),       -- 2. 
+('Animation'),       -- 3.
+('Comedy'),          -- 4. 
+('Crime'),           -- 5. 
+('Documentary'),     -- 6.
+('Drama'),           -- 7. 
+('Family'),          -- 8. 
+('Fantasy'),         -- 9. 
+('Horror'),          -- 10. 
+('Musical'),         -- 11. 
+('Mystery'),         -- 12. 
+('Romance'),         -- 13. 
+('Science Fiction'), -- 14. 
+('Thriller'),        -- 15. 
+('War'),             -- 16.
+('Western');         -- 17. 
 
 INSERT INTO Content_Genre (Content_ID, Genre_ID)
 VALUES
 -- Harry Potter and the Sorcerer's Stone
 (1, 1),  -- Action
 (1, 2),  -- Adventure
-(1, 9),  -- Family
-(1, 10), -- Fantasy
-(1, 13), -- Science Fiction
+(1, 8),  -- Family
+(1, 9), -- Fantasy
+(1, 14), -- Science Fiction
 -- Inception
 (2, 1),  -- Action
 (2, 2),  -- Adventure
-(2, 6),  -- Drama
-(2, 13), -- Science Fiction
+(2, 7),  -- Drama
+(2, 14), -- Science Fiction
 (2, 15), -- Thriller
 -- The Dark Knight
 (3, 1),  -- Action
 (3, 2),  -- Adventure
-(3, 6),  -- Drama
-(3, 10), -- Fantasy
+(3, 7),  -- Drama
+(3, 9), -- Fantasy
 (3, 15), -- Thriller
 -- The Lord of the Rings: The Fellowship of the Ring
 (4, 1),  -- Action
 (4, 2),  -- Adventure
-(4, 9),  -- Family
-(4, 10), -- Fantasy
-(4, 13), -- Science Fiction
+(4, 8),  -- Family
+(4, 9), -- Fantasy
+(4, 14), -- Science Fiction
 -- Avengers: Endgame
 (5, 1),  -- Action
 (5, 2),  -- Adventure
-(5, 10), -- Fantasy
-(5, 13), -- Science Fiction
+(5, 9), -- Fantasy
+(5, 14), -- Science Fiction
 (5, 15), -- Thriller
 -- Titanic
 (6, 4),  -- Drama
 (6, 9),  -- Family
 (6, 13), -- Romance
-(6, 10), -- Fantasy
+(6, 9), -- Fantasy
 -- Frozen
 (7, 3),  -- Animation
-(7, 9),  -- Family
-(7, 10), -- Fantasy
-(7, 13), -- Musical
+(7, 8),  -- Family
+(7, 9), -- Fantasy
+(7, 11), -- Musical
 -- Jurassic Park
 (8, 1),  -- Action
 (8, 2),  -- Adventure
-(8, 6),  -- Drama
-(8, 9),  -- Family
-(8, 13), -- Science Fiction
+(8, 7),  -- Drama
+(8, 8),  -- Family
+(8, 14), -- Science Fiction
 (8, 15), -- Thriller
 -- Stranger Things
 (9, 1),  -- Action
 (9, 2),  -- Adventure
-(9, 6),  -- Drama
-(9, 9),  -- Family
-(9, 10), -- Fantasy
-(9, 13), -- Science Fiction
+(9, 7),  -- Drama
+(9, 8),  -- Family
+(9, 9), -- Fantasy
+(9, 14), -- Science Fiction
 (9, 15), -- Thriller
 -- Game of Thrones
 (10, 1),  -- Action
 (10, 2),  -- Adventure
-(10, 6),  -- Drama
-(10, 10), -- Fantasy
+(10, 7),  -- Drama
+(10, 9), -- Fantasy
 (10, 15), -- Thriller
 (10, 16), -- War
 (10, 17); -- Western
@@ -215,29 +215,28 @@ VALUES
 (10, 'Cripples, Bastards, and Broken Things', 'Tyrion Lannister interacts with the people of the kingdom, and Jon Snow faces a difficult test.', 3600, '2011-05-08', 1, 4),
 (10, 'The Wolf and the Lion', 'The Stark family deals with betrayal, while the Lannisters make their move in the game of thrones.', 3600, '2011-05-15', 1, 5);
 
-INSERT INTO Watch_History (Last_Watched_Timestamp, Completed, Profile_ID, Content_ID, Episode_ID, Device_ID)
+INSERT INTO Watch_History (Last_Watched_Timestamp, Completed, Profile_ID, Content_ID, Episode_ID, Device_ID) 
 VALUES
-(360, TRUE, 1, 1, 1, 1),  -- Alice Profile 1 watched Stranger Things Season 1, Episode 1 on Laptop
-(1440, TRUE, 1, 2, 2, 1),  -- Alice Profile 1 watched Game of Thrones Season 1, Episode 2 on Laptop
-(1800, TRUE, 1, 3, NULL, 1),  -- Alice Profile 1 watched Inception (Movie) on Laptop
-(200, TRUE, 2, 1, 1, 2),  -- Bob Profile 1 watched Stranger Things Season 1, Episode 1 on Laptop
-(2880, TRUE, 2, 2, 1, 2),  -- Bob Profile 1 watched Game of Thrones Season 1, Episode 1 on Laptop
-(3240, TRUE, 2, 2, 2, 2),  -- Bob Profile 1 watched Game of Thrones Season 1, Episode 2 on Laptop
-(3600, TRUE, 2, 4, NULL, 2),  -- Bob Profile 1 watched The Matrix (Movie) on Laptop
-(2410, TRUE, 2, 3, NULL, 2),  -- Bob Profile 1 watched Inception (Movie) on Laptop
-(3960, TRUE, 3, 1, 1, 3),  -- Charlie Profile 1 watched Stranger Things Season 1, Episode 1 on Laptop
-(4320, TRUE, 3, 1, 2, 3),  -- Charlie Profile 1 watched Stranger Things Season 1, Episode 2 on Laptop
-(5400, TRUE, 3, 5, NULL, 3),  -- Charlie Profile 1 watched Gladiator (Movie) on Laptop
-(5760, TRUE, 4, 1, 1, 4),  -- Diana Profile 1 watched Stranger Things Season 1, Episode 1 on Laptop
-(6120, TRUE, 4, 1, 2, 4),  -- Diana Profile 1 watched Stranger Things Season 1, Episode 2 on Laptop
-(6480, TRUE, 4, 3, NULL, 4),  -- Diana Profile 1 watched Avatar (Movie) on Laptop
-(6840, TRUE, 4, 2, 1, 4),  -- Diana Profile 1 watched Game of Thrones Season 1, Episode 1 on Laptop
-(7200, TRUE, 4, 2, 2, 4),  -- Diana Profile 1 watched Game of Thrones Season 1, Episode 2 on Laptop
-(7560, TRUE, 5, 1, 1, 5),  -- Edward Profile 1 watched Stranger Things Season 1, Episode 1 on Tablet
-(7900, TRUE, 5, 1, 2, 5),  -- Edward Profile 1 watched Stranger Things Season 1, Episode 2 on Tablet
-(8280, TRUE, 5, 2, 1, 5),  -- Edward Profile 1 watched Game of Thrones Season 1, Episode 1 on Tablet
-(8640, TRUE, 5, 2, 2, 5),  -- Edward Profile 1 watched Game of Thrones Season 1, Episode 2 on Tablet
-(9000, TRUE, 5, 6, NULL, 5);  -- Edward Profile 1 watched The Dark Knight (Movie) on Tablet
+(360, TRUE, 1, 1, NULL, 1), -- Alice Profile 1 watched "Harry Potter and the Sorcerer's Stone" on Alice Laptop
+(1440, TRUE, 2, 2, NULL, 2), -- Alice Profile 2 watched "Inception" on Alice Smartphone
+(1800, TRUE, 3, 3, NULL, 3), -- Bob Profile 1 watched "The Dark Knight" on Bob Laptop
+(200,  FALSE, 4, 4, NULL, 4), -- Bob Profile 2 watched "The Lord of the Rings: The Fellowship of the Ring" on Bob Smartphone
+(2880, TRUE, 5, 5, NULL, 5), -- Bob Profile 3 watched "Avengers: Endgame" on Bob Tablet
+(3240, TRUE, 7, 6, NULL, 7), -- Charlie Profile 1 watched "Titanic" on Charlie Laptop
+(3600, FALSE, 8, 7, NULL, 8), -- Charlie Profile 2 watched "Frozen" on Charlie Smartphone
+(2410, TRUE, 9, 8, NULL, 9), -- Charlie Profile 3 watched "Jurassic Park" on Charlie Smart TV
+(3960, TRUE, 10, 9, 1, 10), -- Diana Profile 1 watched "Stranger Things - Chapter One" on Diana Laptop
+(4320, FALSE, 11, 9, 2, 11), -- Diana Profile 2 watched "Stranger Things - Chapter Two" on Diana Smartphone
+(5400, TRUE, 13, 10, 1, 13), -- Edward Profile 1 watched "Game of Thrones - Winter Is Coming" on Edward Tablet
+(5760, FALSE, 14, 10, 2, 13), -- Edward Profile 2 watched "Game of Thrones - The Kingsroad" on Edward Console
+(6120, TRUE, 15, 1, NULL, 13), -- Edward Profile 3 watched "Harry Potter and the Sorcerer's Stone" on Edward Tablet
+(6480, TRUE, 1, 7, NULL, 2), -- Alice Profile 1 rewatched "Frozen" on Alice Smartphone
+(6840, TRUE, 6, 4, NULL, 6), -- Bob Profile 4 watched "The Lord of the Rings: The Fellowship of the Ring" on Bob Console
+(7200, TRUE, 12, 8, NULL, 10), -- Diana Profile 3 watched "Jurassic Park" on Diana Laptop
+(7560, TRUE, 7, 6, NULL, 9), -- Charlie Profile 1 rewatched "Titanic" on Charlie Smart TV
+(7900, FALSE, 16, 5, NULL, 13), -- Edward Profile 4 watched "Avengers: Endgame" on Edward Tablet
+(8280, FALSE, 10, 9, 3, 10), -- Diana Profile 1 started "Stranger Things - Chapter Three" on Diana Laptop
+(8640, TRUE, 8, 7, NULL, 8); -- Charlie Profile 2 rewatched "Frozen" on Charlie Smartphone
 
 INSERT INTO Payment_History (Amount, Payment_Date, Card_Name, Card_Num, Card_CVC, Card_Exp_Date, User_ID)
 VALUES

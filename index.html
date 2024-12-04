@@ -128,11 +128,10 @@
 
     <!-- Query 2 -->
     <div id="query-two" class="container tab-content" style="display: none;">
-        <h2>Find the users and the profiles who watched the given movie and stopped past 30 mins time.</h2>
-        <p>Using JOIN on users, content, profiles, watch_history.</p>
-        <p>Using GROUP BY to sort based on profile_id and user_id</p>
+        <h2>Find the users and the titles of movies they've watched for a specific genre.</h2>
+        <p>Enter a genre (e.g., Fantasy, Action, Comedy):</p>
         <div class="query-container">
-            <input type="text" id="movieName" placeholder="Enter the movie name" style="text-align: center" required>
+            <input type="text" id="genre" placeholder="Enter genre" style="text-align: center" required>
             <button onclick="queryTwo()">Submit the query</button> 
         </div>
     </div>
@@ -211,31 +210,34 @@
 
         // Query 2
         async function queryTwo() {
-            const movie = document.getElementById('movieName').value;
-            if (!movie) {
-                alert("Please enter the movie name.");
+            const genre = document.getElementById('genre').value.trim();
+            if (!genre) {
+                alert("Please enter a genre.");
                 return;
             }
             try {
-                // Make the API request, passing the email as a path parameter
-                const response = await fetch(`http://localhost:8001/query_two/${encodeURIComponent(movie)}`);
+                // Make the API request
+                const response = await fetch(`http://localhost:8001/query_two/${encodeURIComponent(genre)}`);
+                
                 // Check if the response is OK
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+
                 // Parse the JSON response
                 const result = await response.json();
-                document.getElementById('output').innerHTML = "";
-                result.forEach((row) => {
-                    document.getElementById('output').innerHTML += row;
-                    document.getElementById('output').innerHTML += "<br>";
-                });
-            } catch (error) {
-                // Handle errors
-                console.error('Error fetching data:', error);
-                document.getElementById('output').innerHTML = `Error: ${error.message}`;
-            }
-        }
+
+                // Ensure the response contains 'columns' and 'data'
+                if (!result.columns || !result.data) {
+                    throw new Error("Invalid response format from the backend.");
+                }
+                        // Display the table
+        displayTable(result);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('output').innerHTML = `Error: ${error.message}`;
+    }
+}
         
 
         async function queryThree() {
@@ -268,6 +270,7 @@
         document.getElementById('output').innerHTML = `Error: ${error.message}`;
     }
 }
+
 
 function displayTable(result) {
     const { columns, data } = result;
