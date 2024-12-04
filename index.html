@@ -138,22 +138,16 @@
     </div>
 
     <!-- Query 3 -->
-    <!-- <div id="query-three" class="container tab-content" style="display: none;">
-        <h2> <div id="query-two" class="container tab-content" style="display: none;">
-            <h2>Find the users and the profiles who watched the given movie and stopped past 30 mins time.</h2>
-            <p>Using ...</p>
-            <p>Using ...</p>
-            <div class="query-container">
-                
-            </div>
-        </div></h2>
-        <p>Using JOIN on users, content, profiles, watch_history.</p>
-        <p>Using GROUP BY to sort based on profile_id and user_id</p>
-        <div class="query-container">
-            <input type="text" id="movieName" placeholder="Enter the movie name" style="text-align: center" required>
-            <button onclick="queryTwo()">Submit the query</button> 
-        </div>
-    </div> -->
+
+   <div id="query-three" class="container tab-content" style="display: none;">
+    <h2>List all movies that are watched by a profile under a certain age, grouped by profile </h2>
+    <p>Using ...</p>
+    <p>Using ...</p>
+    <div class="query-container">
+        <input type="text" id="age" placeholder="Enter the age:" style="text-align: center" required>
+        <button onclick="queryThree()">Submit the query</button> 
+    </div>
+</div>
 
     <!-- Query 5 -->
     <div id="query-five" class="container tab-content" style="display: none;">
@@ -242,6 +236,85 @@
                 document.getElementById('output').innerHTML = `Error: ${error.message}`;
             }
         }
+        
+
+        async function queryThree() {
+    const age = document.getElementById('age').value;
+    if (age < 1) {
+        alert("Please enter a valid age.");
+        return;
+    }
+    try {
+        // Make the API request
+        const response = await fetch(`http://localhost:8001/query_three/${encodeURIComponent(age)}`);
+        
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const result = await response.json();
+
+        // Ensure the response contains 'columns' and 'data'
+        if (!result.columns || !result.data) {
+            throw new Error("Invalid response format from the backend.");
+        }
+
+        // Display the table
+        displayTable(result);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('output').innerHTML = `Error: ${error.message}`;
+    }
+}
+
+function displayTable(result) {
+    const { columns, data } = result;
+    const outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = '';
+
+    // Create the table
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+    table.style.marginTop = '20px';
+
+    // Create the header row
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    columns.forEach(column => {
+        const th = document.createElement('th');
+        th.style.border = '1px solid #e5e5e5';
+        th.style.padding = '10px';
+        th.style.textAlign = 'left';
+        th.style.backgroundColor = '#444';
+        th.textContent = column;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Create the body rows
+    const tbody = document.createElement('tbody');
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+            const td = document.createElement('td');
+            td.style.border = '1px solid #e5e5e5';
+            td.style.padding = '10px';
+            td.style.textAlign = 'left';
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    // Append the table to the output div
+    outputDiv.appendChild(table);
+}
+
 
         // Query 5
         async function queryFive() {
@@ -270,6 +343,8 @@
                 document.getElementById('output').innerHTML = `Error: ${error.message}`;
             }
         }
+
+
     </script>
 </body>
 </html>

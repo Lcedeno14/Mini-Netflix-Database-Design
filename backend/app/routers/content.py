@@ -123,30 +123,40 @@ async def get_last_watched_content(
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
     
-@router.get('/query_three/{content_name}')
+@router.get('/query_three/{age}')
 async def get_last_watched_content(
-    content_name: str, db=Depends(get_db),
+    age: int, db=Depends(get_db),
 ):
     query = """
-                SELECT 
-                u.FName, 
-                u.LName, 
-                p.Name AS Profile_Name 
-                FROM Watch_History w
-                JOIN Profiles p ON w.Profile_ID = p.Profile_ID
-                JOIN Users u ON p.User_ID = u.User_ID
-                JOIN Content c ON w.Content_ID = c.Content_ID
-                WHERE c.Title = %s 
-                    AND w.Last_Watched_Timestamp > 1800
-                GROUP BY u.User_ID, p.Profile_ID
+            SELECT 
+                p.Profile_ID,
+                p.Name AS Profile_Name,
+                p.Age,
+                c.Content_ID,
+                c.Title AS Movie_Title
+            FROM 
+                Profiles p
+            JOIN 
+                Watch_History wh ON p.Profile_ID = wh.Profile_ID
+            JOIN 
+                Content c ON wh.Content_ID = c.Content_ID
+            WHERE 
+                p.Age < %s AND c.Content_Type = 'Movie'
+            GROUP BY 
+                p.Profile_ID, p.Name, p.Age, c.Content_ID, c.Title
+            ORDER BY 
+                p.Profile_ID, c.Title;
+
             """    
     try: 
         async with db.cursor() as cursor:
-            await cursor.execute(query, content_name)
-            result = await cursor.fetchall()
-        return result
+            await cursor.execute(query, age)
+            rows = await cursor.fetchall()
+            columns = [desc[0] for desc in cursor.description]  # Get column names
+        # Combine column names with rows for structured response
+        return {"columns": columns, "data": rows}
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+        raise HTTPException(status_code=500, detail="Error retrieving data: {e}")
 
 @router.get('/query_five/{actor_name}')
 async def get_last_watched_content(
