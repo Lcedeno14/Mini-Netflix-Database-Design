@@ -99,6 +99,7 @@
             background-color: #333;
             padding: 20px;
             border-radius: 5px;
+            width: 2500px;
         }
 
         .output pre {
@@ -160,6 +161,7 @@
         <div id="query-three-tab" class="tab" onclick="changeTab('query-three')">Query 3</div>
         <div id="query-four-tab" class="tab" onclick="changeTab('query-four')">Query 4</div>
         <div id="query-five-tab" class="tab" onclick="changeTab('query-five')">Query 5</div>
+        <div id="query-extra-tab" class="tab" onclick="changeTab('query-extra')">Extra query</div>
     </div>
 
     <!-- Query 1 -->
@@ -278,8 +280,13 @@
                 <button type="submit">Submit the query</button> 
             </div>
         </form>
-        
      </div>
+
+     <!-- Additional queries -->
+    <div id="query-extra" class="container tab-content" style="display: none;">
+        <h2>Show entire Database</h2>
+        <button onclick="showEntireDB()">Submit the query</button>
+    </div>
 
     <!-- Output Section -->
     <div class="output" id="output"></div>
@@ -355,90 +362,90 @@
                     throw new Error("Invalid response format from the backend.");
                 }
                         // Display the table
-        displayTable(result);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('output').innerHTML = `Error: ${error.message}`;
-    }
-}
+                displayTable(result);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
+        }
         
         async function queryThree() {
-    const age = document.getElementById('age').value;
-    if (age < 1) {
-        alert("Please enter a valid age.");
-        return;
-    }
-    try {
-        // Make the API request
-        const response = await fetch(`http://localhost:8001/query_three/${encodeURIComponent(age)}`);
-        
-        // Check if the response is OK
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            const age = document.getElementById('age').value;
+            if (age < 1) {
+                alert("Please enter a valid age.");
+                return;
+            }
+            try {
+                // Make the API request
+                const response = await fetch(`http://localhost:8001/query_three/${encodeURIComponent(age)}`);
+                
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                // Parse the JSON response
+                const result = await response.json();
+
+                // Ensure the response contains 'columns' and 'data'
+                if (!result.columns || !result.data) {
+                    throw new Error("Invalid response format from the backend.");
+                }
+
+                // Display the table
+                displayTable(result);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
         }
 
-        // Parse the JSON response
-        const result = await response.json();
 
-        // Ensure the response contains 'columns' and 'data'
-        if (!result.columns || !result.data) {
-            throw new Error("Invalid response format from the backend.");
+        function displayTable(result) {
+            const { columns, data } = result;
+            const outputDiv = document.getElementById('output');
+            outputDiv.innerHTML = '';
+
+            // Create the table
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+            table.style.marginTop = '20px';
+
+            // Create the header row
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            columns.forEach(column => {
+                const th = document.createElement('th');
+                th.style.border = '1px solid #e5e5e5';
+                th.style.padding = '10px';
+                th.style.textAlign = 'left';
+                th.style.backgroundColor = '#444';
+                th.textContent = column;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create the body rows
+            const tbody = document.createElement('tbody');
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.style.border = '1px solid #e5e5e5';
+                    td.style.padding = '10px';
+                    td.style.textAlign = 'left';
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+
+            // Append the table to the output div
+            outputDiv.appendChild(table);
         }
-
-        // Display the table
-        displayTable(result);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('output').innerHTML = `Error: ${error.message}`;
-    }
-}
-
-
-function displayTable(result) {
-    const { columns, data } = result;
-    const outputDiv = document.getElementById('output');
-    outputDiv.innerHTML = '';
-
-    // Create the table
-    const table = document.createElement('table');
-    table.style.width = '100%';
-    table.style.borderCollapse = 'collapse';
-    table.style.marginTop = '20px';
-
-    // Create the header row
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    columns.forEach(column => {
-        const th = document.createElement('th');
-        th.style.border = '1px solid #e5e5e5';
-        th.style.padding = '10px';
-        th.style.textAlign = 'left';
-        th.style.backgroundColor = '#444';
-        th.textContent = column;
-        headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    // Create the body rows
-    const tbody = document.createElement('tbody');
-    data.forEach(row => {
-        const tr = document.createElement('tr');
-        row.forEach(cell => {
-            const td = document.createElement('td');
-            td.style.border = '1px solid #e5e5e5';
-            td.style.padding = '10px';
-            td.style.textAlign = 'left';
-            td.textContent = cell;
-            tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-
-    // Append the table to the output div
-    outputDiv.appendChild(table);
-}
 
 
         // Query 5
@@ -521,6 +528,38 @@ function displayTable(result) {
         // Attach the submit event listener to the form
         document.getElementById('contentForm').addEventListener('submit', submitContentForm);
 
+        async function showEntireDB() {
+            try {
+                // Make the API request, passing the email as a path parameter
+                const response = await fetch(`http://localhost:8001/get_db_info`);
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const result = await response.json();
+                const formattedOutput = {};
+                out = "";
+                result.forEach(([category, field, type]) => {
+                    if (!formattedOutput[category]) {
+                        formattedOutput[category] = [];
+                    }
+                    formattedOutput[category].push(`${field} (${type})`);
+                });
+                Object.keys(formattedOutput).forEach(category => {
+                    out += category; 
+                    out += "<br><table border='1'><tr>";
+                    formattedOutput[category].forEach(column_name => {
+                        out += "<td>" + column_name + "</td>";
+                    });
+                    out += "</tr></table><br>"
+                });
+                document.getElementById('output').innerHTML = out;
+            } catch (error) {
+                // Handle errors
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
+        }
     </script>
 </body>
 </html>

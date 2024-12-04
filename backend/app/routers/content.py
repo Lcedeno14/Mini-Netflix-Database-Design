@@ -210,24 +210,20 @@ async def get_last_watched_content(
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
 
 
-@router.get('/test')
+@router.get('/get_db_info')
 async def get_last_watched_content(
     db=Depends(get_db),
 ):
-    # query = """
-    #             SELECT 
-    #             u.FName, 
-    #             u.LName, 
-    #             p.Name AS Profile_Name 
-    #             FROM Watch_History w
-    #             JOIN Profiles p ON w.Profile_ID = p.Profile_ID
-    #             JOIN Users u ON p.User_ID = u.User_ID
-    #             JOIN Content c ON w.Content_ID = c.Content_ID
-    #             WHERE c.Title = %s 
-    #                 AND w.Last_Watched_Timestamp > 1800
-    #             GROUP BY u.User_ID, p.Profile_ID
-    #         """    
-    query = """DESCRIBE Content"""
+    query = """
+                SELECT 
+                TABLE_NAME,
+                COLUMN_NAME,
+                COLUMN_TYPE
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME IN ('Users', 'Profiles', 'Content', 'Cast', 'Device', 'Episodes',
+                                    'Genre', 'Manager', 'Payment_History', 'Profile_Watchlist', 'Subscription_Type',
+                                    'Watch_History')
+            """
     try: 
         async with db.cursor() as cursor:
             await cursor.execute(query)
@@ -235,3 +231,4 @@ async def get_last_watched_content(
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+
