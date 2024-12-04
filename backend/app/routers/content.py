@@ -171,7 +171,7 @@ async def get_last_watched_content(
             GROUP BY 
                 p.Profile_ID, p.Name, p.Age, c.Content_ID, c.Title
             ORDER BY 
-                p.Profile_ID, c.Title;
+                p.Profile_ID, c.Content_ID;
 
             """    
     try: 

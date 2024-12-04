@@ -176,19 +176,38 @@
     <!-- Query 2 -->
     <div id="query-two" class="container tab-content" style="display: none;">
         <h2>Find the users and the titles of movies they've watched for a specific genre.</h2>
-        <p>Enter a genre (e.g., Fantasy, Action, Comedy):</p>
+        <p>Select a genre from the dropdown:</p>
         <div class="query-container">
-            <input type="text" id="genre" placeholder="Enter genre" style="text-align: center" required>
-            <button onclick="queryTwo()">Submit the query</button> 
+            <select id="genre" style="text-align: center" required>
+                <option value="" disabled selected>Select a genre</option>
+                <option value="Action">Action</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Animation">Animation</option>
+                <option value="Comedy">Comedy</option>
+                <option value="Crime">Crime</option>
+                <option value="Documentary">Documentary</option>
+                <option value="Drama">Drama</option>
+                <option value="Family">Family</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Horror">Horror</option>
+                <option value="Musical">Musical</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Romance">Romance</option>
+                <option value="Science Fiction">Science Fiction</option>
+                <option value="Thriller">Thriller</option>
+                <option value="War">War</option>
+                <option value="Western">Western</option>
+            </select>
+            <button onclick="queryTwo()">Submit the query</button>
         </div>
     </div>
-
+    
     <!-- Query 3 -->
 
    <div id="query-three" class="container tab-content" style="display: none;">
     <h2>List all movies that are watched by a profile under a certain age, grouped by profile </h2>
-    <p>Using ...</p>
-    <p>Using ...</p>
+    <p>Using JOIN between Profiles, Watch_History, and Content to fetch profile details and the movies they watched.</p>
+    <p>Filtering profiles with an age less than the specified value and ensuring the content type is 'Movie'.</p>
     <div class="query-container">
         <input type="text" id="age" placeholder="Enter the age:" style="text-align: center" required>
         <button onclick="queryThree()">Submit the query</button> 
