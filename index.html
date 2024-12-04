@@ -167,7 +167,14 @@
     <!-- Query 1 -->
     <div id="query-one" class="container tab-content">
         <h2>Find the number of profiles for the given user.</h2>
-        <p>Using LEFT JOIN on profiles and user and confirming the email matches</p>
+        <h3>Query Ran</h3>
+            <p style="padding-left: 30px;">
+                SELECT u.Email, COUNT(p.Profile_ID) AS Profile_Count
+                FROM Users u
+                LEFT JOIN Profiles p ON u.User_ID = p.User_ID
+                WHERE u.Email = %s
+                GROUP BY u.Email;
+            </p>
         <div class="query-container">
             <input type="email" id="userEmail" placeholder="Enter user email" style="text-align: center" required>
             <button onclick="queryOne()">Submit the query</button> 
@@ -178,6 +185,24 @@
     <!-- Query 2 -->
     <div id="query-two" class="container tab-content" style="display: none;">
         <h2>Find the users and the titles of movies they've watched for a specific genre.</h2>
+        <h3>Query Ran</h3>
+            <p style="padding-left: 30px;">
+                SELECT DISTINCT u.FName AS User_First_Name, 
+                    u.LName AS User_Last_Name, 
+                    c.Content_ID,  -- Include Content_ID for debugging
+                    c.Title AS Movie_Title
+                FROM Users u
+                JOIN Profiles p ON u.User_ID = p.User_ID
+                JOIN Watch_History wh ON p.Profile_ID = wh.Profile_ID
+                JOIN Content c ON wh.Content_ID = c.Content_ID
+                WHERE c.Content_ID IN (
+                    SELECT cg.Content_ID
+                    FROM Content_Genre cg
+                    JOIN Genre g ON cg.Genre_ID = g.Genre_ID
+                    WHERE g.Genre_Name = %s
+                ) AND c.Content_Type = 'Movie';
+            </p>
+        
         <p>Select a genre from the dropdown:</p>
         <div class="query-container">
             <select id="genre" style="text-align: center" required>
@@ -205,11 +230,29 @@
     </div>
     
     <!-- Query 3 -->
-
    <div id="query-three" class="container tab-content" style="display: none;">
     <h2>List all movies that are watched by a profile under a certain age, grouped by profile </h2>
-    <p>Using JOIN between Profiles, Watch_History, and Content to fetch profile details and the movies they watched.</p>
-    <p>Filtering profiles with an age less than the specified value and ensuring the content type is 'Movie'.</p>
+    <h3>Query Ran</h3>
+        <p style="padding-left: 30px;">
+            SELECT 
+                p.Profile_ID,
+                p.Name AS Profile_Name,
+                p.Age,
+                c.Content_ID,
+                c.Title AS Movie_Title
+            FROM 
+                Profiles p
+            JOIN 
+                Watch_History wh ON p.Profile_ID = wh.Profile_ID
+            JOIN 
+                Content c ON wh.Content_ID = c.Content_ID
+            WHERE 
+                p.Age < %s AND c.Content_Type = 'Movie'
+            GROUP BY 
+                p.Profile_ID, p.Name, p.Age, c.Content_ID, c.Title
+            ORDER BY 
+                p.Profile_ID, c.Content_ID;
+        </p>
     <div class="query-container">
         <input type="text" id="age" placeholder="Enter the age:" style="text-align: center" required>
         <button onclick="queryThree()">Submit the query</button> 
@@ -219,8 +262,21 @@
     <!-- Query 5 -->
     <div id="query-five" class="container tab-content" style="display: none;">
         <h2>Find all the content that a particular actor is in movies that were released in between 2000-2010</h2>
-        <p>Using JOIN on Content and Cast and checking for Release_Date</p>
-        <img src="./LeoMovies.png" style="height: 200px">
+        <h3>Query Ran</h3>
+        <p style="padding-left: 30px;">
+            SELECT 
+                Content.Title AS Movie_Title,
+                Content.Release_Date AS Release_Date,
+                Cast.Position AS Actor_Role
+            FROM 
+            Content JOIN Cast ON Content.Content_ID = Cast.Content_ID
+            WHERE 
+                Content.Content_type = 'Movie'
+                AND Content.Release_Date BETWEEN '2000-01-01' AND '2010-12-31'
+                AND Cast.Name = %s
+            ORDER BY Content.Release_Date;
+        </p>
+        <!-- <img src="./LeoMovies.png" style="height: 200px; padding-left: 30px;"> -->
         <div class="query-container">
             <input type="text" id="actorName" placeholder="Enter the name of the actor:" style="text-align: center" required>
             <button onclick="queryFive()">Submit the query</button> 
@@ -230,6 +286,11 @@
     <!-- Query 4-->
      <div id="query-four" class="container tab-content" style="display: none;">
         <h2>Add New Content</h2>
+        <h3>Query Ran</h3>
+            <p style="padding-left: 30px;">
+                INSERT INTO Content (Content_Type, Title, Summary, Release_Date, Maturity_Rating, Duration, Video_URL, Trailer_URL, Flyer_URL, Manager_ID)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            </p>
         <form id="contentForm" method="POST" class="add-query"> 
             <!-- Left Column -->
             <div class="left-column">
@@ -304,6 +365,17 @@
      <!-- Additional queries -->
     <div id="query-extra" class="container tab-content" style="display: none;">
         <h2>Show entire Database</h2>
+        <h3>Query Ran</h3>
+            <p style="padding-left: 30px;">
+                SELECT 
+                TABLE_NAME,
+                COLUMN_NAME,
+                COLUMN_TYPE
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME IN ('Users', 'Profiles', 'Content', 'Cast', 'Device', 'Episodes',
+                                    'Genre', 'Manager', 'Payment_History', 'Profile_Watchlist', 'Subscription_Type',
+                                    'Watch_History')
+            </p>
         <button onclick="showEntireDB()">Submit the query</button>
     </div>
 
@@ -532,7 +604,6 @@
 
                 // Display success message or response
                 document.getElementById('output').innerHTML = `
-                    <p style="color: green;">Content added successfully!</p>
                     <p>Response: ${JSON.stringify(result)}</p>
                 `;
             } catch (error) {
