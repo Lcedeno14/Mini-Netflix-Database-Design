@@ -1,7 +1,21 @@
 from fastapi import APIRouter, HTTPException, Depends, Path
 from app.database import get_db
+from datetime import date
+from pydantic import BaseModel
 
 router = APIRouter()
+
+class ContentData(BaseModel):
+    content_type: str
+    title: str
+    summary: str
+    release_date: date
+    maturity_rating: str
+    duration: int
+    video_url: str
+    trailer_url: str
+    flyer_url: str
+    manager_id: int
 
 # Utility function to validate table names
 VALID_TABLES = {
@@ -57,21 +71,27 @@ async def get_table_contents(
 # POST: Add content to the Content table
 @router.post("/add_contents")
 async def create_content(
-    content_type: str,
-    title: str,
-    release_date: str,
-    maturity_rating: str,
-    duration: str,
-    video_url: str,
-    trailer_url: str,
-    flyer_url: str,
+    content: ContentData,
     db=Depends(get_db),
 ):
+    values = (
+        content.content_type,
+        content.title,
+        content.summary,
+        content.release_date,
+        content.maturity_rating,
+        content.duration,
+        content.video_url,
+        content.trailer_url,
+        content.flyer_url,
+        content.manager_id,
+    )
+    print(values)
     query = """
-        INSERT INTO Content (Content_Type, Title, Release_Date, Maturity_Rating, Duration, Video_URL, Trailer_URL, Flyer_URL)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO Content (Content_Type, Title, Summary, Release_Date, Maturity_Rating, Duration, Video_URL, Trailer_URL, Flyer_URL, Manager_ID)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
-    values = (content_type, title, release_date, maturity_rating, duration, video_url, trailer_url, flyer_url)
+    
     try:
         async with db.cursor() as cursor:
             await cursor.execute(query, values)
@@ -143,6 +163,33 @@ async def get_last_watched_content(
     try: 
         async with db.cursor() as cursor:
             await cursor.execute(query, content_name)
+            result = await cursor.fetchall()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+
+
+@router.get('/test')
+async def get_last_watched_content(
+    db=Depends(get_db),
+):
+    # query = """
+    #             SELECT 
+    #             u.FName, 
+    #             u.LName, 
+    #             p.Name AS Profile_Name 
+    #             FROM Watch_History w
+    #             JOIN Profiles p ON w.Profile_ID = p.Profile_ID
+    #             JOIN Users u ON p.User_ID = u.User_ID
+    #             JOIN Content c ON w.Content_ID = c.Content_ID
+    #             WHERE c.Title = %s 
+    #                 AND w.Last_Watched_Timestamp > 1800
+    #             GROUP BY u.User_ID, p.Profile_ID
+    #         """    
+    query = """DESCRIBE Content"""
+    try: 
+        async with db.cursor() as cursor:
+            await cursor.execute(query)
             result = await cursor.fetchall()
         return result
     except Exception as e:
