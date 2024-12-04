@@ -95,12 +95,13 @@
         }
 
         .output {
-            margin-top: 30px;
-            background-color: #333;
-            padding: 20px;
-            border-radius: 5px;
-            width: 2500px;
-        }
+    margin-top: 30px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+
 
         .output pre {
             white-space: pre-wrap;
@@ -494,50 +495,58 @@
 
 
         function displayTable(result) {
-            const { columns, data } = result;
-            const outputDiv = document.getElementById('output');
-            outputDiv.innerHTML = '';
+    const { columns, data } = result;
+    const outputDiv = document.getElementById('output');
+    outputDiv.innerHTML = '';
 
-            // Create the table
-            const table = document.createElement('table');
-            table.style.width = '100%';
-            table.style.borderCollapse = 'collapse';
-            table.style.marginTop = '20px';
+    // Create a scrollable container
+    const tableWrapper = document.createElement('div');
+    tableWrapper.style.overflowX = 'auto'; // Enable horizontal scrolling
+    tableWrapper.style.marginTop = '20px';
 
-            // Create the header row
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            columns.forEach(column => {
-                const th = document.createElement('th');
-                th.style.border = '1px solid #e5e5e5';
-                th.style.padding = '10px';
-                th.style.textAlign = 'left';
-                th.style.backgroundColor = '#444';
-                th.textContent = column;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
+    // Create the table
+    const table = document.createElement('table');
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
 
-            // Create the body rows
-            const tbody = document.createElement('tbody');
-            data.forEach(row => {
-                const tr = document.createElement('tr');
-                row.forEach(cell => {
-                    const td = document.createElement('td');
-                    td.style.border = '1px solid #e5e5e5';
-                    td.style.padding = '10px';
-                    td.style.textAlign = 'left';
-                    td.textContent = cell;
-                    tr.appendChild(td);
-                });
-                tbody.appendChild(tr);
-            });
-            table.appendChild(tbody);
+    // Create the header row
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    columns.forEach(column => {
+        const th = document.createElement('th');
+        th.style.border = '1px solid #e5e5e5';
+        th.style.padding = '10px';
+        th.style.textAlign = 'left';
+        th.style.backgroundColor = '#444';
+        th.textContent = column;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-            // Append the table to the output div
-            outputDiv.appendChild(table);
-        }
+    // Create the body rows
+    const tbody = document.createElement('tbody');
+    data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+            const td = document.createElement('td');
+            td.style.border = '1px solid #e5e5e5';
+            td.style.padding = '10px';
+            td.style.textAlign = 'left';
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+
+    // Append the table to the scrollable container
+    tableWrapper.appendChild(table);
+
+    // Append the scrollable container to the output div
+    outputDiv.appendChild(tableWrapper);
+}
+
 
 
         // Query 5
