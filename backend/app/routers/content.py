@@ -55,7 +55,7 @@ async def get_table_contents(
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
 
 # POST: Add content to the Content table
-@router.post("/contents")
+@router.post("/add_contents")
 async def create_content(
     content_type: str,
     title: str,
