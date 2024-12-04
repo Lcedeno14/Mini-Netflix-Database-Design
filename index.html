@@ -158,8 +158,8 @@
     <!-- Query 5 -->
     <div id="query-five" class="container tab-content" style="display: none;">
         <h2>Find all the content that a particular actor is in movies that were released in between 2000-2010</h2>
-        <p>Using ...</p>
-        <p>Using ...</p>
+        <p>Using JOIN on Content and Cast and checking for Release_Date</p>
+        <img src="./LeoMovies.png" style="height: 200px">
         <div class="query-container">
             <input type="text" id="actorName" placeholder="Enter the name of the actor:" style="text-align: center" required>
             <button onclick="queryFive()">Submit the query</button> 
@@ -261,7 +261,10 @@
                 const result = await response.json();
                 document.getElementById('output').innerHTML = "";
                 result.forEach((row) => {
-                    document.getElementById('output').innerHTML += row;
+                    document.getElementById('output').innerHTML += "Movie: ";
+                    document.getElementById('output').innerHTML += row[0];
+                    document.getElementById('output').innerHTML += ", Release Date: ";
+                    document.getElementById('output').innerHTML += row[1];
                     document.getElementById('output').innerHTML += "<br>";
                 });
             } catch (error) {

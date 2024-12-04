@@ -165,9 +165,6 @@ async def get_last_watched_content(
                     AND Cast.Name = %s
                 ORDER BY Content.Release_Date;
             """    
-    # query = """
-    #             DESCRIBE Content
-    #         """
     try: 
         async with db.cursor() as cursor:
             await cursor.execute(query, actor_name)
@@ -175,4 +172,3 @@ async def get_last_watched_content(
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
-
