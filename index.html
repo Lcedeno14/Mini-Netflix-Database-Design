@@ -100,6 +100,7 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+        
     </style>
 </head>
 <body>
@@ -107,61 +108,52 @@
 
     <!-- Tab Container -->
     <div class="tab-container">
-        <div id="user-tab" class="tab active" onclick="changeTab('user')">User Queries</div>
-        <div id="movies-tab" class="tab" onclick="changeTab('movies')">Movies Queries</div>
-        <div id="admin-tab" class="tab" onclick="changeTab('admin')">Admin</div>
+        <div id="query-one-tab" class="tab active" onclick="changeTab('query-one')">Query 1</div>
+        <div id="query-two-tab" class="tab" onclick="changeTab('query-two')">Query 2</div>
+        <div id="query-three-tab" class="tab" onclick="changeTab('query-three')">Query 3</div>
+        <div id="query-four-tab" class="tab" onclick="changeTab('query-four')">Query 4</div>
+        <div id="query-five-tab" class="tab" onclick="changeTab('query-five')">Query 5</div>
     </div>
 
-    <!-- User Queries Tab -->
-    <div id="user" class="container tab-content">
-        <h2>User Queries</h2>
+    <!-- Query 1 -->
+    <div id="query-one" class="container tab-content">
+        <h2>Find the number of profiles for the given user.</h2>
+        <p>Using LEFT JOIN on profiles and user and confirming the email matches</p>
         <div class="query-container">
-            <button onclick="showOutput('a')">Find # of Profiles for a User</button>
-            <button onclick="showOutput('b')">Find Subscription Type for a User</button>
-            <button onclick="showOutput('c')">Add Device to User Account</button>
-            <button onclick="showOutput('d')">Update User's Payment Plan</button>
-            <button onclick="showOutput('e')">Find Total Number of Users</button>
-            <button onclick="showOutput('f')">Show All Devices Where User is Signed In</button>
-            <div class="input-group">
-                <label for="userId">User ID:</label>
-                <input type="text" id="userId" placeholder="Enter User ID">
-            </div>
+            <input type="email" id="userEmail" placeholder="Enter user email" style="text-align: center" required>
+            <button onclick="queryOne()">Submit the query</button> 
+            
         </div>
     </div>
 
-    <!-- Movies Queries Tab -->
-    <div id="movies" class="container tab-content" style="display: none;">
-        <h2>Movies Queries</h2>
+    <!-- Query 2 -->
+    <div id="query-two" class="container tab-content" style="display: none;">
+        <h2>Find the users and the profiles who watched the given movie and stopped past 30 mins time.</h2>
+        <p>Using JOIN on users, content, profiles, watch_history.</p>
+        <p>Using GROUP BY to sort based on profile_id and user_id</p>
         <div class="query-container">
-            <button onclick="showOutput('g')">Retrieve All Episodes of a TV Show Season</button>
-            <button onclick="showOutput('h')">Check if Movie Can Be Watched on Kids Profile</button>
-            <button onclick="showOutput('i')">Get Watchlist for Profile</button>
-            <button onclick="showOutput('j')">Check if Profile Must Contain Only Kids Content</button>
-            <button onclick="showOutput('k')">Remove Movie from Watchlist</button>
-            <button onclick="showOutput('l')">Find Content Available in a Location</button>
-            <button onclick="showOutput('m')">Find All TV Shows by Genre</button>
-            <button onclick="showOutput('n')">Get Most-Watched/Liked Genres</button>
-            <div class="input-group">
-                <label for="contentId">Content ID (Movie/TV Show):</label>
-                <input type="text" id="contentId" placeholder="Enter Content ID">
-            </div>
+            <input type="text" id="movieName" placeholder="Enter the movie name" style="text-align: center" required>
+            <button onclick="queryTwo()">Submit the query</button> 
         </div>
     </div>
 
-    <!-- Admin Tab -->
-    <div id="admin" class="container tab-content" style="display: none;">
-        <h2>Admin Queries</h2>
-        <div class="query-container">
-            <button onclick="showOutput('o')">Add Profile to User Account</button>
-            <button onclick="showOutput('p')">Remove Profile from User Account</button>
-            <button onclick="showOutput('q')">Update Profile Preferences</button>
-            <button onclick="showOutput('r')">Get Payment Details of a User</button>
-            <div class="input-group">
-                <label for="profileId">Profile ID:</label>
-                <input type="text" id="profileId" placeholder="Enter Profile ID">
+    <!-- Query 3 -->
+    <!-- <div id="query-three" class="container tab-content" style="display: none;">
+        <h2> <div id="query-two" class="container tab-content" style="display: none;">
+            <h2>Find the users and the profiles who watched the given movie and stopped past 30 mins time.</h2>
+            <p>Using ...</p>
+            <p>Using ...</p>
+            <div class="query-container">
+                
             </div>
+        </div></h2>
+        <p>Using JOIN on users, content, profiles, watch_history.</p>
+        <p>Using GROUP BY to sort based on profile_id and user_id</p>
+        <div class="query-container">
+            <input type="text" id="movieName" placeholder="Enter the movie name" style="text-align: center" required>
+            <button onclick="queryTwo()">Submit the query</button> 
         </div>
-    </div>
+    </div> -->
 
     <!-- Output Section -->
     <div class="output" id="output"></div>
@@ -186,10 +178,58 @@
             document.getElementById(`${tabName}-tab`).classList.add('active');
         }
 
-        // Function to handle queries (displaying results)
-        function showOutput(output) {
-            // Display results in the output section
-            document.getElementById("output").innerHTML = output;
+        // Query 1
+        async function queryOne() {
+            const email = document.getElementById('userEmail').value;
+            if (!email) {
+                alert("Please enter an email.");
+                return;
+            }
+            try {
+                // Make the API request, passing the email as a path parameter
+                const response = await fetch(`http://localhost:8001/query_one/${encodeURIComponent(email)}`);
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the JSON response
+                const result = await response.json();
+                document.getElementById('output').innerHTML = "email: " + result.email;
+                document.getElementById('output').innerHTML += "<br>"
+                document.getElementById('output').innerHTML += "Profiles: " + result.profile_count
+            } catch (error) {
+                // Handle errors
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Query 2
+        async function queryTwo() {
+            const movie = document.getElementById('movieName').value;
+            if (!movie) {
+                alert("Please enter the movie name.");
+                return;
+            }
+            try {
+                // Make the API request, passing the email as a path parameter
+                const response = await fetch(`http://localhost:8001/query_two/${encodeURIComponent(movie)}`);
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the JSON response
+                const result = await response.json();
+                document.getElementById('output').innerHTML = "";
+                result.forEach((row) => {
+                    document.getElementById('output').innerHTML += row;
+                    document.getElementById('output').innerHTML += "<br>";
+                });
+            } catch (error) {
+                // Handle errors
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
         }
     </script>
 </body>
