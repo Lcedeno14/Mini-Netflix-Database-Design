@@ -147,3 +147,32 @@ async def get_last_watched_content(
         return result
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+
+@router.get('/query_five/{actor_name}')
+async def get_last_watched_content(
+    actor_name: str, db=Depends(get_db),
+):
+    query = """
+                SELECT 
+                    Content.Title AS Movie_Title,
+                    Content.Release_Date AS Release_Date,
+                    Cast.Position AS Actor_Role
+                FROM 
+                Content JOIN Cast ON Content.Content_ID = Cast.Content_ID
+                WHERE 
+                    Content.Content_type = 'Movie'
+                    AND Content.Release_Date BETWEEN '2000-01-01' AND '2010-12-31'
+                    AND Cast.Name = %s
+                ORDER BY Content.Release_Date;
+            """    
+    # query = """
+    #             DESCRIBE Content
+    #         """
+    try: 
+        async with db.cursor() as cursor:
+            await cursor.execute(query, actor_name)
+            result = await cursor.fetchall()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error retrieving data: " + str(e))
+

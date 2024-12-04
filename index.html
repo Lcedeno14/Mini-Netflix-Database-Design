@@ -155,6 +155,17 @@
         </div>
     </div> -->
 
+    <!-- Query 5 -->
+    <div id="query-five" class="container tab-content" style="display: none;">
+        <h2>Find all the content that a particular actor is in movies that were released in between 2000-2010</h2>
+        <p>Using ...</p>
+        <p>Using ...</p>
+        <div class="query-container">
+            <input type="text" id="actorName" placeholder="Enter the name of the actor:" style="text-align: center" required>
+            <button onclick="queryFive()">Submit the query</button> 
+        </div>
+    </div>
+
     <!-- Output Section -->
     <div class="output" id="output"></div>
 
@@ -214,6 +225,34 @@
             try {
                 // Make the API request, passing the email as a path parameter
                 const response = await fetch(`http://localhost:8001/query_two/${encodeURIComponent(movie)}`);
+                // Check if the response is OK
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                // Parse the JSON response
+                const result = await response.json();
+                document.getElementById('output').innerHTML = "";
+                result.forEach((row) => {
+                    document.getElementById('output').innerHTML += row;
+                    document.getElementById('output').innerHTML += "<br>";
+                });
+            } catch (error) {
+                // Handle errors
+                console.error('Error fetching data:', error);
+                document.getElementById('output').innerHTML = `Error: ${error.message}`;
+            }
+        }
+
+        // Query 5
+        async function queryFive() {
+            const actor = document.getElementById('actorName').value;
+            if (!actor) {
+                alert("Please enter the actor name.");
+                return;
+            }
+            try {
+                // Make the API request, passing the email as a path parameter
+                const response = await fetch(`http://localhost:8001/query_five/${encodeURIComponent(actor)}`);
                 // Check if the response is OK
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
