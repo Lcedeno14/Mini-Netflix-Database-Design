@@ -1,4 +1,7 @@
 # Netflix Clone Backend Project
+![image](https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245)
+![image](https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8)
+
 
 Welcome to the backend repository for a Netflix-like application. This project aims to create a functional backend for a streaming service, featuring database design, data management, and an API layer for data interaction.
 
