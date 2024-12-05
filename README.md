@@ -80,8 +80,9 @@ Explore the full API in the Swagger UI.
 Here are screenshots illustrating the database schema and a query interface:
 
 ### ER Diagram: 
+<img src="https://github.com/user-attachments/assets/a8ac42e3-dff8-4adb-a2b3-f8a2848f723f" width="900">
 
-<img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="850">
+
 
 ### Query UI: 
 
