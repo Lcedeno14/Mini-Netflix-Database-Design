@@ -1,8 +1,5 @@
 # Netflix Clone Backend Project
 
-<img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="1000">
-<img src="https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8" width="850">
-
 Welcome to the backend repository for a Netflix-like application. This project focuses on creating a functional backend for a streaming service, showcasing **backend development skills** such as database design, data handling, and API development.
 
 ---
@@ -35,7 +32,7 @@ The project showcases:
 - **FastAPI**: High-performance framework for building RESTful APIs in Python.
 - **MySQL**: Relational database management for user and content data.
 - **Docker**: Containerization tool for consistent development environments.
-- **Swagger UI**: Auto-generated API documentation.
+
 
 ---
 
@@ -70,20 +67,25 @@ The MySQL database models key streaming-service entities:
 - Content: Metadata for movies and TV shows.
 - Watch History: Tracks user viewing progress.
 - Genres: Categorizes content.
+  
 Key API endpoints:
 
-- /contents: Retrieve content based on filters like maturity rating or type (e.g., "Movie" or "TV Show").
-- /profiles: Manage profiles (create, edit, delete).
-- /watch-history: Retrieve and manage viewing history.
+- ```/contents```: Retrieve content based on filters like maturity rating or type (e.g., "Movie" or "TV Show").
+- ```/profiles```: Manage profiles (create, edit, delete).
+- ```/watch-history```: Retrieve and manage viewing history.
 Explore the full API in the Swagger UI.
 
 
 ## Visual Aids
 Here are screenshots illustrating the database schema and a query interface:
 
-ER Diagram: <img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="850">
+### ER Diagram: 
 
-Query UI: <img src="https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8" width="850">
+<img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="850">
+
+### Query UI: 
+
+<img src="https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8" width="850">
 
 These visuals provide an overview of the database structure and demonstrate how the backend enables dynamic data interaction.
 
