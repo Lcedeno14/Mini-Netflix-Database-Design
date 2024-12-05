@@ -1,34 +1,51 @@
 # Netflix Clone Backend Project
+
 <img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="1000">
 <img src="https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8" width="850">
 
+Welcome to the backend repository for a Netflix-like application. This project focuses on creating a functional backend for a streaming service, showcasing **backend development skills** such as database design, data handling, and API development.
 
-Welcome to the backend repository for a Netflix-like application. This project aims to create a functional backend for a streaming service, featuring database design, data management, and an API layer for data interaction.
+---
+
+## Table of Contents
+1. [Project Overview](#project-overview)
+2. [Technologies Used](#technologies-used)
+3. [Running the Project](#running-the-project)
+4. [Database and API Design](#database-and-api-design)
+5. [Visual Aids](#visual-aids)
+
+---
 
 ## Project Overview
 
-This project involves designing a relational database that mimics the functionality of Netflix, with a focus on content management, user subscriptions, profiles, and watch history. We have implemented a FastAPI-based backend to interact with the database, providing a comprehensive API to support features like querying available content, managing user profiles, and maintaining a watch history.
+This project involves:
+- Designing a **relational database** to handle users, subscriptions, profiles, and watch history.
+- Implementing a **FastAPI-based backend** with endpoints for content querying, user management, and tracking watch history.
+- Using **Docker** for containerized deployment, enabling efficient setup and scaling.
 
-The project showcases core backend development skills, including:
-- **Database Design**: Created a MySQL database schema to store and manage data related to users, subscriptions, content, and other related entities. The database schema includes tables for managing user profiles, watch history, subscriptions, and content genres, ensuring relationships are represented using foreign keys.
-- **API Development**: Set up a RESTful API using FastAPI to interact with the MySQL database. The API provides endpoints for operations such as retrieving content, managing user profiles, and exploring watch history.
-- **Data Handling**: Developed endpoints to enable CRUD operations for various components of the Netflix-like service. We also plan to import fake data to demonstrate the full potential of our system.
+The project showcases:
+- **Database Design**: A MySQL schema with normalized tables and proper relationships.
+- **API Development**: RESTful endpoints for CRUD operations.
+- **Data Handling**: Comprehensive backend logic for content, users, and profiles.
+
+---
 
 ## Technologies Used
 
-- **FastAPI**: A modern, fast (high-performance), web framework for building APIs with Python. It has been used here to provide a RESTful API layer that interacts with the backend database.
-- **MySQL**: A relational database management system used for storing all the data, including users, subscriptions, content, and profiles.
-- **Docker**: Used to containerize the application, making it easy to set up and deploy in any environment. Both MySQL and FastAPI services are configured with Docker Compose for streamlined development.
+- **FastAPI**: High-performance framework for building RESTful APIs in Python.
+- **MySQL**: Relational database management for user and content data.
+- **Docker**: Containerization tool for consistent development environments.
+- **Swagger UI**: Auto-generated API documentation.
+
+---
 
 ## Running the Project
 
-To run the project locally, you need Docker and Docker Compose installed. Follow these steps:
+To run this project locally, follow these steps:
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
    gh repo clone Lcedeno14/Mini-Netflix-Database-Design
-   ```
-   ```bash
    cd backend
    ```
 
@@ -37,45 +54,36 @@ To run the project locally, you need Docker and Docker Compose installed. Follow
    docker-compose up --build
    ```
 
-   This will set up both the MySQL database (`mysql_container`) and the FastAPI backend (`backend_container`).
+   This sets up:
+   - mysql_container: MySQL database
+   - backend_container: FastAPI backend
 
-3. Access the API documentation:
+4. Access the API documentation:
    - Once the backend is running, you can access the Swagger UI documentation at: [http://localhost:8001/docs](http://localhost:8001/docs).
-   - The Swagger UI allows you to explore and test the available API endpoints easily.
 
-## API Endpoints
+## Database and API Design
 
-Some of the key API endpoints available include:
+The MySQL database models key streaming-service entities:
 
-- **/contents**: Retrieve a list of content filtered by parameters like maturity rating or type (e.g., "Movie" or "TV Show").
-- **/profiles**: Manage user profiles, including adding new profiles, editing existing ones, and deleting profiles.
-- **/watch-history**: Retrieve and manage watch history for a given user profile.
+- Users: Stores account and subscription details.
+- Profiles: Multiple profiles per account with individual settings.
+- Content: Metadata for movies and TV shows.
+- Watch History: Tracks user viewing progress.
+- Genres: Categorizes content.
+Key API endpoints:
 
-The full list of available endpoints and their usage can be explored through the [Swagger UI](http://localhost:8001/docs).
+- /contents: Retrieve content based on filters like maturity rating or type (e.g., "Movie" or "TV Show").
+- /profiles: Manage profiles (create, edit, delete).
+- /watch-history: Retrieve and manage viewing history.
+Explore the full API in the Swagger UI.
 
-## Database Design
 
-The MySQL database was designed to model key entities relevant to a streaming service, such as:
+## Visual Aids
+Here are screenshots illustrating the database schema and a query interface:
 
-- **Users**: Storing user information and subscription details.
-- **Content**: Information about the available movies and TV shows, including metadata such as titles, maturity ratings, and release dates.
-- **Profiles**: Support for multiple user profiles per account, each with its unique settings and watch history.
-- **Watch History and Genres**: Tracking viewing progress and content categorization.
+ER Diagram: <img src="https://github.com/user-attachments/assets/b0df2a8f-0763-44ca-84e0-752244a04245" width="850">
 
-The schema includes appropriate primary and foreign keys to maintain relationships between entities, such as users and their profiles or content and genres.
+Query UI: <img src="https://github.com/user-attachments/assets/56dae5f5-54e1-4ced-9b22-28b15d60bbf8" width="850">
 
-## Future Plans
-
-We plan to:
-- **Import Fake Data**: Populate the database with realistic fake data to demonstrate the API in action.
-- **Add More Features**: Expand the backend to support more features, such as search functionality, advanced filtering, and personalized recommendations.
-
-## Key Takeaways for Employers
-
-This project demonstrates my ability to design and implement a complete backend solution, focusing on practical skills required for a software development role, such as:
-- **Database Schema Design**: Creating normalized tables, establishing relationships, and ensuring data integrity.
-- **API Development**: Building efficient and maintainable RESTful APIs using FastAPI.
-- **Containerization with Docker**: Making deployment easier with Docker and Docker Compose.
-
-Feel free to explore the codebase, try running the backend locally, and check out the API documentation to see the implementation in action. I welcome any questions or feedback regarding this project.
+These visuals provide an overview of the database structure and demonstrate how the backend enables dynamic data interaction.
 
