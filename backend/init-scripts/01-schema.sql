@@ -142,3 +142,9 @@ CREATE TABLE IF NOT EXISTS Profile_Watchlist (
     FOREIGN KEY (Profile_ID) REFERENCES Profiles(Profile_ID),
     FOREIGN KEY (Content_ID) REFERENCES Content(Content_ID)
 );
+
+CREATE TABLE IF NOT EXISTS Temp_User(
+    User_ID INT AUTO_INCREMENT,
+    Email VARCHAR(100) UNIQUE NOT NULL PRIMARY KEY,
+    Password VARCHAR(25) NOT NULL
+);

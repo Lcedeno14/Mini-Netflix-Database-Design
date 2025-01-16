@@ -20,18 +20,18 @@ router = APIRouter()
 async def create_user(db, email: str, password: str):
     hashed_password = hash_pwd.hash(password)
     async with db.cursor() as cursor:
-        await cursor.execute("SELECT * FROM temp_users WHERE email = %s", (email,))
+        await cursor.execute("SELECT * FROM Temp_User WHERE email = %s", (email,))
         existing_user = cursor.fetchone()
         if existing_user:
             raise HTTPException(status_code=400, detail="User with this email already exists") #confirm the status codes 
         await cursor.execute(
-            'INSERT INTO temp_users (email, hashed_password) VALUES (%s, %s)',
+            'INSERT INTO Temp_User (email, hashed_password) VALUES (%s, %s)',
             (email, hashed_password)
         ) 
 
 async def authenticate_user(db, email:str, password:str):
     async with db.cursor() as cursor:
-        await cursor.execute('SELECT * FROM temp_users WHERE email = %s', (email,))
+        await cursor.execute('SELECT * FROM Temp_User WHERE email = %s', (email,))
         user = await cursor.fetchone()
 
         if not user or not hash_pwd.verify(password, user['hashed_password']):

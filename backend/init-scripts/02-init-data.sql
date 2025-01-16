@@ -1,3 +1,8 @@
+-- Adding here for ease of use 
+INSERT INTO Temp_User (Email, Password)
+VALUES
+('Test User', 'random');
+
 INSERT INTO Subscription_Type (Type_Name, Price, Max_Devices, Has_Ads, Max_Resolution, Max_Device_Download)
 VALUES 
 ('Standard with ads', 6.99, 2, TRUE, '1080p', 2),
