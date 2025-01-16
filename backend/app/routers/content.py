@@ -1,9 +1,65 @@
-from fastapi import APIRouter, HTTPException, Depends, Path
+from fastapi import APIRouter, HTTPException, Depends, Path, Request
+from fastapi.security import OAuth2PasswordRequestForm
+from passlib.context import CryptContext
+from jose import jwt, JWTError
 from app.database import get_db
 from datetime import date
 from pydantic import BaseModel
 
+# Needed for JWT -- necessary for users to access authorized pages (profile, personal content etc.)
+SECRET_KEY = ""
+ALGORITHM = "HS256" # chatgpt recommended using this 
+
+# hash passwords
+hash_pwd = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
 router = APIRouter()
+
+
+#adding the functions here for ease of use... MOVE AFTER FINAL CHECK FOR FUNCTIONALITY
+async def create_user(db, email: str, password: str):
+    hashed_password = hash_pwd.hash(password)
+    async with db.cursor() as cursor:
+        await cursor.execute("SELECT * FROM temp_users WHERE email = %s", (email,))
+        existing_user = cursor.fetchone()
+        if existing_user:
+            raise HTTPException(status_code=400, detail="User with this email already exists") #confirm the status codes 
+        await cursor.execute(
+            'INSERT INTO temp_users (email, hashed_password) VALUES (%s, %s)',
+            (email, hashed_password)
+        ) 
+
+async def authenticate_user(db, email:str, password:str):
+    async with db.cursor() as cursor:
+        await cursor.execute('SELECT * FROM temp_users WHERE email = %s', (email,))
+        user = await cursor.fetchone()
+
+        if not user or not hash_pwd.verify(password, user['hashed_password']):
+            return None
+        return user
+    
+
+@router.post('/signup')
+async def signup(request: Request, db=Depends(get_db)):
+    body = await Request.json()
+    if not body.get('email') or not body.get('password'):
+        raise HTTPException(status_code=400, detail="Email and password are required.") #confirm the status codes
+    await create_user(db, body['email'], body['password'])
+    # REQUIRES generating and returning JWT token for access to authorized apps
+    return
+
+@router.post('/signin')
+async def signin(request: Request, db=Depends(get_db)):
+    body = await Request.json()
+    if not body.get('email') or not body.get('password'):
+        raise HTTPException(status_code=400, detail="Email and password are required.") #confirm the status codes
+    user = await authenticate_user(db, body['email'], body['password'])
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid credentials!") #confirm the status codes
+    
+    # REQUIRES generating and returning JWT token for access to authorized apps
+    return
 
 class ContentData(BaseModel):
     content_type: str
