@@ -1,7 +1,7 @@
 -- Adding here for ease of use 
 INSERT INTO Temp_User (Email, Password)
 VALUES
-('Test User', 'random');
+('test@gmail.com', 'random');
 
 INSERT INTO Subscription_Type (Type_Name, Price, Max_Devices, Has_Ads, Max_Resolution, Max_Device_Download)
 VALUES 

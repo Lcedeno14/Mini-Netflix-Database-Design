@@ -14,6 +14,9 @@ const AuthForm: React.FC = () => {
     confirmPassword: "",
   });
 
+  const [message, setMessage] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const toggleForm = () => {
     setIsSignUp((prev) => !prev);
     setFormData({
@@ -21,6 +24,7 @@ const AuthForm: React.FC = () => {
       password: "",
       confirmPassword: "",
     });
+    setMessage(null);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,17 +33,42 @@ const AuthForm: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isSignUp) {
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords do not match!");
 
-        return;
+    if (isSignUp && formData.password !== formData.confirmPassword) {
+      setMessage("Passwords do not match. Please try again!");
+
+      return;
+    }
+    const endpoint = isSignUp ? "/signup" : "/signin";
+    const body = { email: formData.email, password: formData.password };
+
+    try {
+      setLoading(true);
+      setMessage(null);
+
+      const response = await fetch(`http://localhost:8001${endpoint}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setMessage(data.detail || "Error!!");
+      } else {
+        setMessage(isSignUp ? "Sign-up successful!" : "Sign-in successful");
+        // NEED TO STORE JWT TOKENS
+        // data.token -- store it on local or session storage
       }
-      alert("Sign Up Data:");
-    } else {
-      alert("Sign In Data:");
+    } catch (error) {
+      setMessage("Error!!!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -76,15 +105,16 @@ const AuthForm: React.FC = () => {
             onChange={handleChange}
           />
         )}
-        <button style={styles.button} type="submit">
-          {isSignUp ? "Sign Up" : "Sign In"}
+        <button style={styles.button} type="submit" disabled={loading}>
+          {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
         </button>
       </form>
+      {<p style={styles.message}>{message}</p>}
       <p style={styles.toggleText}>
         {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
         <button style={styles.toggleLink} onClick={toggleForm}>
-        {isSignUp ? "Sign In" : "Sign Up"}
-        </button>        
+          {isSignUp ? "Sign In" : "Sign Up"}
+        </button>
       </p>
     </div>
   );
