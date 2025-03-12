@@ -6,17 +6,14 @@ import PricingPage from "@/pages/pricing";
 import BlogPage from "@/pages/blog";
 import AboutPage from "@/pages/about";
 import AuthForm from "./components/AuthForm";
+import Home from "./components/Home";
 
 function App() {
   return (
-    // <Routes>
-    //   <Route element={<IndexPage />} path="/" />
-    //   <Route element={<DocsPage />} path="/docs" />
-    //   <Route element={<PricingPage />} path="/pricing" />
-    //   <Route element={<BlogPage />} path="/blog" />
-    //   <Route element={<AboutPage />} path="/about" />
-    // </Routes>
-    <AuthForm />
+    <Routes>
+      <Route path="/" element={<AuthForm />} />
+      <Route path="/home" element={<Home />} />
+    </Routes>
   );
 }
 

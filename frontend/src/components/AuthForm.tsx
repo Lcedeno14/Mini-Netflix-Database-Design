@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface FormData {
   email: string;
@@ -7,6 +8,7 @@ interface FormData {
 }
 
 const AuthForm: React.FC = () => {
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -64,6 +66,11 @@ const AuthForm: React.FC = () => {
         setMessage(isSignUp ? "Sign-up successful!" : "Sign-in successful");
         // NEED TO STORE JWT TOKENS
         // data.token -- store it on local or session storage
+        
+        // Navigate to home page after successful authentication
+        setTimeout(() => {
+          navigate('/home');
+        }, 1500); // Give user time to see success message
       }
     } catch (error) {
       setMessage("Error!!!");
